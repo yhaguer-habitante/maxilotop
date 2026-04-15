@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Historia Clinica - MaxiloTOP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Arial,Helvetica,sans-serif;background:#f0f4f8;color:#222;font-size:16px}
+.hdr{background:#1a5568;color:#fff;padding:18px 16px;text-align:center}
+.hdr h1{font-size:22px;font-weight:bold;margin-bottom:3px;color:#fff}
+.hdr h2{font-size:13px;font-weight:normal;opacity:.9;color:#fff}
+.hdr p{font-size:12px;opacity:.8;margin-top:3px;color:#fff}
+.tip{background:#e0f0f5;border-left:4px solid #2c7a8c;padding:14px 16px;margin:14px 12px 0;border-radius:8px;font-size:14px;color:#1a5568;line-height:1.7}
+.wrap{padding:12px 12px 50px}
+.card{background:#fff;border-radius:12px;padding:18px 16px;margin-bottom:14px;border:1px solid #dde;-webkit-overflow-scrolling:touch}
+.card-title{font-size:15px;font-weight:bold;color:#1a5568;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #eee}
+.fgrp{margin-bottom:14px}
+.flbl{display:block;font-size:12px;font-weight:bold;color:#555;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.req{color:#c00}
+input[type=text],
+input[type=date],
+input[type=tel],
+input[type=email],
+select,
+textarea{
+  width:100%;
+  padding:13px 14px;
+  border:1.5px solid #ccc;
+  border-radius:8px;
+  font-size:16px;
+  color:#222;
+  background:#fafafa;
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  outline:none;
+  display:block;
+}
+input[type=date]{-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:#2c7a8c;background:#fff}
+textarea{resize:vertical;min-height:90px}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23666' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:400px){.g2{grid-template-columns:1fr}}
+.btn-main{
+  width:100%;
+  background:#1a5568;
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  padding:18px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  display:block;
+  -webkit-appearance:none;
+  appearance:none;
+  margin-top:4px;
+}
+.btn-main:active{opacity:.8}
+.footer{text-align:center;margin-top:14px;font-size:12px;color:#888;line-height:1.9}
+.result{display:none;background:#fff;border-radius:12px;padding:18px 16px;margin-top:14px;border:1px solid #dde}
+.res-title{font-size:15px;font-weight:bold;color:#1a5568;margin-bottom:10px}
+.res-box{
+  background:#f0f7f9;
+  border:1px solid #b8d8e0;
+  border-radius:8px;
+  padding:14px;
+  font-size:13px;
+  color:#222;
+  line-height:1.7;
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-family:Arial,Helvetica,sans-serif;
+  max-height:300px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  user-select:all;
+  -webkit-user-select:all;
+}
+.how{background:#e0f0f5;border-radius:8px;padding:14px;margin-top:12px;font-size:14px;color:#1a5568;line-height:1.8}
+.how b{font-weight:bold}
+.btn-row{display:flex;gap:10px;margin-top:14px}
+.btn-copy{
+  flex:1;
+  background:#eef4f7;
+  color:#1a5568;
+  border:2px solid #2c7a8c;
+  border-radius:8px;
+  padding:14px 8px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.btn-wa{
+  flex:1;
+  background:#25d366;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:14px 8px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.btn-copy:active,.btn-wa:active{opacity:.8}
+.ok-msg{display:none;background:#d4edda;color:#155724;border-radius:8px;padding:12px 14px;margin-top:10px;font-size:14px;text-align:center;font-weight:bold}
+.reserved{background:#fff8e1;border:1px dashed #e6a800;border-radius:8px;padding:12px;margin-top:8px;font-size:13px;color:#7a5500;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>MaxiloTOP</h1>
+  <h2>SOLUCIONES BUCODENTALES</h2>
+  <p>C.D. Yhaguer M. Espinoza Salas - C.O.P.: 53906</p>
+</div>
+
+<div class="tip">
+  <b>Como llenar este formulario:</b><br>
+  1. Complete todos los campos del formulario.<br>
+  2. Toque el boton azul al final.<br>
+  3. Copie el resumen y envielo por WhatsApp al doctor.
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="card-title">Datos Personales</div>
+    <div class="g2">
+      <div class="fgrp">
+        <label class="flbl">Nombre(s) <span class="req">*</span></label>
+        <input type="text" id="nombre" placeholder="Juan" autocomplete="given-name">
+      </div>
+      <div class="fgrp">
+        <label class="flbl">Apellidos <span class="req">*</span></label>
+        <input type="text" id="apellido" placeholder="Mamani Torres" autocomplete="family-name">
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fgrp">
+        <label class="flbl">Fecha de nacimiento</label>
+        <input type="date" id="fnac">
+      </div>
+      <div class="fgrp">
+        <label class="flbl">Grupo sanguineo</label>
+        <select id="gs">
+          <option value="">-- Seleccione --</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+          <option>No se</option>
+        </select>
+      </div>
+    </div>
+    <div class="fgrp">
+      <label class="flbl">Telefono / WhatsApp <span class="req">*</span></label>
+      <input type="tel" id="tel" placeholder="+51 987 654 321" autocomplete="tel">
+    </div>
+    <div class="fgrp">
+      <label class="flbl">Correo electronico</label>
+      <input type="email" id="email" placeholder="correo@ejemplo.com" autocomplete="email">
+    </div>
+    <div class="fgrp">
+      <label class="flbl">Ocupacion</label>
+      <input type="text" id="ocup" placeholder="Estudiante, docente, etc.">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Antecedentes Medicos</div>
+
+    <div class="fgrp">
+      <label class="flbl">Alergia a medicamentos</label>
+      <select id="alergia" onchange="mostrar('alDetalle', this.value==='Si tengo alergias')">
+        <option value="">-- Seleccione --</option>
+        <option value="No tengo alergias">No tengo alergias</option>
+        <option value="Si tengo alergias">Si, tengo alergias</option>
+        <option value="No lo se">No lo se</option>
+      </select>
+    </div>
+    <div id="alDetalle" style="display:none">
+      <div class="fgrp">
+        <label class="flbl">Principal alergia</label>
+        <select id="alTipo">
+          <option value="">-- Seleccione --</option>
+          <option>Penicilina / Amoxicilina</option>
+          <option>Ibuprofeno / AINEs</option>
+          <option>Aspirina</option>
+          <option>Metronidazol</option>
+          <option>Latex (guantes)</option>
+          <option>Anestesia local (lidocaina)</option>
+          <option>Yodo / Betadine</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fgrp">
+        <label class="flbl">Especifique si es otra</label>
+        <input type="text" id="alOtra" placeholder="Escriba la alergia...">
+      </div>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Condicion medica principal</label>
+      <select id="condicion">
+        <option value="">-- Seleccione --</option>
+        <option>Ninguna</option>
+        <option>Hipertension arterial</option>
+        <option>Diabetes</option>
+        <option>Enfermedad cardiaca / Marcapasos</option>
+        <option>Asma / Enfermedad respiratoria</option>
+        <option>Hipotiroidismo / Hipertiroidismo</option>
+        <option>Trastorno de coagulacion</option>
+        <option>Embarazo / Lactancia</option>
+        <option>Osteoporosis</option>
+        <option>Enfermedad renal</option>
+        <option>Hepatitis</option>
+        <option>Cancer / En tratamiento</option>
+        <option>Otra condicion</option>
+      </select>
+      <input type="text" id="condOtra" placeholder="Detalle si eligio Otra condicion..." style="margin-top:8px">
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Medicamentos actuales</label>
+      <select id="meds" onchange="mostrar('medDetalle', this.value==='Si tomo medicamentos')">
+        <option value="">-- Seleccione --</option>
+        <option value="No tomo medicamentos">No tomo medicamentos</option>
+        <option value="Si tomo medicamentos">Si, tomo medicamentos</option>
+      </select>
+    </div>
+    <div id="medDetalle" style="display:none">
+      <div class="fgrp">
+        <label class="flbl">Medicamento principal</label>
+        <select id="medTipo">
+          <option value="">-- Seleccione --</option>
+          <option>Anticoagulantes (Warfarina)</option>
+          <option>Antihipertensivos</option>
+          <option>Antidiabeticos / Insulina</option>
+          <option>Bifosfonatos (Alendronato)</option>
+          <option>Corticoides (Prednisona)</option>
+          <option>Anticonceptivos hormonales</option>
+          <option>Anticonvulsivantes</option>
+          <option>Antidepresivos / Ansioliticos</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fgrp">
+        <label class="flbl">Especifique si es otro</label>
+        <input type="text" id="medOtro" placeholder="Nombre y dosis...">
+      </div>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Habitos relevantes</label>
+      <select id="habito">
+        <option value="">-- Seleccione --</option>
+        <option>Ninguno</option>
+        <option>Fumador activo</option>
+        <option>Consumo frecuente de alcohol</option>
+        <option>Bruxismo (aprieta o rechina dientes)</option>
+        <option>Respirador bucal</option>
+        <option>Dieta alta en azucares</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Historia de la Enfermedad</div>
+
+    <div class="fgrp">
+      <label class="flbl">Motivo de consulta (con sus propias palabras) <span class="req">*</span></label>
+      <textarea id="motivo" placeholder="Describa que le molesta y que lo trae hoy al consultorio..."></textarea>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Zona que le molesta</label>
+      <select id="zona">
+        <option value="">-- Seleccione --</option>
+        <option>Arriba derecha</option>
+        <option>Arriba izquierda</option>
+        <option>Abajo derecha</option>
+        <option>Abajo izquierda</option>
+        <option>Toda la boca</option>
+        <option>Encias / tejidos blandos</option>
+        <option>Mandibula / quijada</option>
+        <option>No se exactamente</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Tipo de dolor principal</label>
+      <select id="tipoDolor">
+        <option value="">-- Seleccione --</option>
+        <option>Dolor punzante / agudo</option>
+        <option>Dolor pulsatil (late como el corazon)</option>
+        <option>Dolor sordo / pesado / profundo</option>
+        <option>Dolor ardiente / quemante</option>
+        <option>Sensacion de presion</option>
+        <option>Hormigueo o adormecimiento</option>
+        <option>Dolor que va al oido o cuello</option>
+        <option>Inflamacion / bulto en la encia</option>
+        <option>Sangrado de encias</option>
+        <option>Diente flojo</option>
+        <option>Diente roto o astillado</option>
+        <option>Llaga / herida en la boca</option>
+        <option>Sin dolor - solo revision o control</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Cuando aparece o empeora</label>
+      <select id="cuando">
+        <option value="">-- Seleccione --</option>
+        <option>Al morder o masticar</option>
+        <option>Con frio (agua fria, helado)</option>
+        <option>Con calor (sopa, cafe)</option>
+        <option>Con alimentos dulces o acidos</option>
+        <option>De noche / al acostarse</option>
+        <option>Espontaneo (sin causa aparente)</option>
+        <option>Al tocarlo con la lengua</option>
+        <option>Al cepillarme</option>
+        <option>Todo el tiempo / constantemente</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Como inicio la molestia</label>
+      <select id="inicio">
+        <option value="">-- Seleccione --</option>
+        <option>Gradual (poco a poco)</option>
+        <option>Subito (de repente)</option>
+        <option>Despues de tratamiento dental</option>
+        <option>Despues de un golpe o trauma</option>
+        <option>Despues de una extraccion dental</option>
+        <option>No recuerdo como empezo</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Tiempo de evolucion</label>
+      <select id="tiempo">
+        <option value="">-- Seleccione --</option>
+        <option>Hoy (menos de 24 horas)</option>
+        <option>2 a 3 dias</option>
+        <option>Una semana</option>
+        <option>2 a 4 semanas</option>
+        <option>1 a 3 meses</option>
+        <option>Mas de 3 meses</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Intensidad del dolor (0=sin dolor, 10=insoportable)</label>
+      <select id="intensidad">
+        <option value="">-- Seleccione --</option>
+        <option value="0 - Sin dolor">0 - Sin dolor</option>
+        <option value="1 - Muy leve">1 - Muy leve</option>
+        <option value="2 - Leve">2 - Leve</option>
+        <option value="3 - Leve a moderado">3 - Leve a moderado</option>
+        <option value="4 - Moderado">4 - Moderado</option>
+        <option value="5 - Moderado">5 - Moderado</option>
+        <option value="6 - Moderado a intenso">6 - Moderado a intenso</option>
+        <option value="7 - Intenso">7 - Intenso</option>
+        <option value="8 - Muy intenso">8 - Muy intenso</option>
+        <option value="9 - Severo">9 - Severo</option>
+        <option value="10 - Insoportable">10 - Insoportable</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Tomo algo para el dolor</label>
+      <select id="medDolor">
+        <option value="">-- Seleccione --</option>
+        <option>No tome nada</option>
+        <option>Si y me mejoro</option>
+        <option>Si pero no me hizo efecto</option>
+        <option>Si, mejoro pero volvio el dolor</option>
+      </select>
+    </div>
+
+    <div class="fgrp">
+      <label class="flbl">Antecedente dental en esa zona</label>
+      <select id="antDental">
+        <option value="">-- Seleccione --</option>
+        <option>Ninguno</option>
+        <option>Extraccion previa en esa zona</option>
+        <option>Tratamiento de conducto (endodoncia)</option>
+        <option>Empaste / obturacion reciente</option>
+        <option>Corona dental</option>
+        <option>Protesis removible (placa)</option>
+        <option>Implante dental</option>
+        <option>Ortodoncia actual o anterior</option>
+        <option>Cirugia oral previa</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Signos y Sintomas Adicionales</div>
+    <div class="fgrp">
+      <label class="flbl">Mal olor o mal sabor en boca</label>
+      <select id="olor">
+        <option value="">-- Seleccione --</option>
+        <option>No</option>
+        <option>Si, tengo mal olor</option>
+        <option>Si, tengo mal sabor</option>
+        <option>Si, ambos</option>
+      </select>
+    </div>
+    <div class="fgrp">
+      <label class="flbl">Dificultad para abrir la boca</label>
+      <select id="apertura">
+        <option value="">-- Seleccione --</option>
+        <option>No</option>
+        <option>Si, poca dificultad</option>
+        <option>Si, mucha dificultad</option>
+      </select>
+    </div>
+    <div class="fgrp">
+      <label class="flbl">Ruido o chasquido en la mandibula</label>
+      <select id="chasquido">
+        <option value="">-- Seleccione --</option>
+        <option>No</option>
+        <option>Si, al abrir</option>
+        <option>Si, al cerrar</option>
+        <option>Si, al abrir y cerrar</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Observaciones del Paciente</div>
+    <div class="fgrp">
+      <label class="flbl">Informacion adicional</label>
+      <textarea id="obs" placeholder="Escriba aqui cualquier informacion importante que desee agregar..."></textarea>
+    </div>
+    <div class="reserved">
+      <b>RESERVADO PARA USO DEL DOCTOR</b><br>
+      Diagnostico - Plan de tratamiento - Odontograma - Examen clinico<br>
+      Dr. C.D. Yhaguer M. Espinoza Salas - C.O.P.: 53906
+    </div>
+  </div>
+
+  <button type="button" class="btn-main" id="btnGenerar" onclick="generar()">
+    Generar Historia Clinica
+  </button>
+
+  <div class="footer">
+    MaxiloTOP - Soluciones Bucodentales<br>
+    Calle Juan Manuel Polar 703, Urb. Santa Rosa - Mariano Melgar - Arequipa<br>
+    Tel: 991 447 991 | 957 786 398 - Atencion: 8am a 8pm
+  </div>
+
+  <div class="result" id="resultDiv">
+    <div class="res-title">Historia Clinica lista para enviar</div>
+    <div class="res-box" id="resText"></div>
+
+    <div class="how">
+      <b>Como enviar al doctor:</b><br>
+      1. Toque el boton COPIAR de abajo.<br>
+      2. Toque el boton verde WHATSAPP.<br>
+      3. En WhatsApp mantenga presionado el campo de texto y toque Pegar.<br>
+      4. Envie el mensaje. Listo.
+    </div>
+
+    <div class="btn-row">
+      <button type="button" class="btn-copy" id="btnCopy" onclick="copiar()">COPIAR</button>
+      <button type="button" class="btn-wa" onclick="abrirWA()">WHATSAPP</button>
+    </div>
+
+    <div class="ok-msg" id="okMsg">Texto copiado correctamente</div>
+  </div>
+
+</div>
+
+<script>
+function mostrar(id, show){
+  document.getElementById(id).style.display = show ? 'block' : 'none';
+}
+
+function g(id){
+  var el = document.getElementById(id);
+  if(!el) return 'No especificado';
+  var v = el.value.trim();
+  return v || 'No especificado';
+}
+
+function generar(){
+  var nombre = document.getElementById('nombre').value.trim();
+  var apellido = document.getElementById('apellido').value.trim();
+  var tel = document.getElementById('tel').value.trim();
+  var motivo = document.getElementById('motivo').value.trim();
+
+  if(!nombre || !apellido){
+    alert('Por favor ingrese su nombre y apellidos.');
+    return;
+  }
+  if(!tel){
+    alert('Por favor ingrese su numero de telefono.');
+    return;
+  }
+  if(!motivo){
+    alert('Por favor describa el motivo de su consulta.');
+    return;
+  }
+
+  var hoy = new Date();
+  var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var fecha = hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+
+  var alergia = g('alergia');
+  if(document.getElementById('alergia').value === 'Si tengo alergias'){
+    var alTipo = g('alTipo');
+    var alOtra = document.getElementById('alOtra').value.trim();
+    alergia = alTipo + (alOtra ? ' - ' + alOtra : '');
+  }
+
+  var meds = g('meds');
+  if(document.getElementById('meds').value === 'Si tomo medicamentos'){
+    var medTipo = g('medTipo');
+    var medOtro = document.getElementById('medOtro').value.trim();
+    meds = medTipo + (medOtro ? ' - ' + medOtro : '');
+  }
+
+  var condicion = g('condicion');
+  var condOtra = document.getElementById('condOtra').value.trim();
+  if(condOtra) condicion = condicion + ' - ' + condOtra;
+
+  var obs = document.getElementById('obs').value.trim() || 'Sin observaciones adicionales';
+
+  var txt =
+'HISTORIA CLINICA DIGITAL\n' +
+'MaxiloTOP - Soluciones Bucodentales\n' +
+'Dr. C.D. Yhaguer M. Espinoza Salas\n' +
+'C.O.P.: 53906\n' +
+'Fecha: ' + fecha + '\n' +
+'\n--- DATOS PERSONALES ---\n' +
+'Paciente: ' + nombre + ' ' + apellido + '\n' +
+'Fecha Nac.: ' + g('fnac') + '\n' +
+'Telefono: ' + tel + '\n' +
+'Correo: ' + g('email') + '\n' +
+'Grupo sanguineo: ' + g('gs') + '\n' +
+'Ocupacion: ' + g('ocup') + '\n' +
+'\n--- ANTECEDENTES MEDICOS ---\n' +
+'Alergias: ' + alergia + '\n' +
+'Condicion medica: ' + condicion + '\n' +
+'Medicamentos: ' + meds + '\n' +
+'Habitos: ' + g('habito') + '\n' +
+'\n--- HISTORIA DE LA ENFERMEDAD ---\n' +
+'Motivo de consulta: ' + motivo + '\n' +
+'Zona afectada: ' + g('zona') + '\n' +
+'Tipo de dolor: ' + g('tipoDolor') + '\n' +
+'Cuando aparece: ' + g('cuando') + '\n' +
+'Como inicio: ' + g('inicio') + '\n' +
+'Tiempo de evolucion: ' + g('tiempo') + '\n' +
+'Intensidad del dolor: ' + g('intensidad') + '\n' +
+'Medicamento para el dolor: ' + g('medDolor') + '\n' +
+'Antecedente dental: ' + g('antDental') + '\n' +
+'\n--- SIGNOS Y SINTOMAS ADICIONALES ---\n' +
+'Mal olor o sabor: ' + g('olor') + '\n' +
+'Dificultad para abrir boca: ' + g('apertura') + '\n' +
+'Chasquido en mandibula: ' + g('chasquido') + '\n' +
+'\n--- OBSERVACIONES ---\n' +
+obs + '\n' +
+'\n[RESERVADO - DOCTOR]\n' +
+'Diagnostico y plan de tratamiento\n' +
+'Dr. Espinoza Salas - MaxiloTOP\n' +
+'Tel: 991 447 991 | Arequipa';
+
+  window._txt = txt;
+  window._nombre = nombre + ' ' + apellido;
+
+  document.getElementById('resText').textContent = txt;
+  var rd = document.getElementById('resultDiv');
+  rd.style.display = 'block';
+  document.getElementById('okMsg').style.display = 'none';
+
+  setTimeout(function(){
+    rd.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 100);
+}
+
+function copiar(){
+  var txt = window._txt || '';
+  var btn = document.getElementById('btnCopy');
+  var ok = document.getElementById('okMsg');
+
+  if(navigator.clipboard && typeof navigator.clipboard.writeText === 'function'){
+    navigator.clipboard.writeText(txt).then(function(){
+      btn.textContent = 'COPIADO';
+      ok.style.display = 'block';
+      setTimeout(function(){ btn.textContent = 'COPIAR'; }, 3000);
+    }).catch(function(){
+      copiarFallback(txt, btn, ok);
+    });
+  } else {
+    copiarFallback(txt, btn, ok);
+  }
+}
+
+function copiarFallback(txt, btn, ok){
+  var el = document.getElementById('resText');
+  if(window.getSelection && document.createRange){
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try {
+      document.execCommand('copy');
+      btn.textContent = 'COPIADO';
+      ok.style.display = 'block';
+      setTimeout(function(){ btn.textContent = 'COPIAR'; }, 3000);
+    } catch(e){
+      alert('Mantenga presionado el texto del resumen y toque "Seleccionar todo" y luego "Copiar".');
+    }
+    sel.removeAllRanges();
+  }
+}
+
+function abrirWA(){
+  var msg = 'Historia Clinica - MaxiloTOP\nPaciente: ' + (window._nombre || '') + '\n\n' + (window._txt || '');
+  var url = 'https://wa.me/51991447991?text=' + encodeURIComponent(msg);
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
